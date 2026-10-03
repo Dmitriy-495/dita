@@ -10,40 +10,58 @@ Completed
 
 ## Implemented
 
-- Go module initialized.
-- Added typed `meta.Catalog` model.
-- `Catalog` contains:
-  - `id`
-  - `name`
-  - `prefix`
-- Added validation for required `name` and `prefix`.
-- Added unit tests.
-- Added initial architecture documentation.
-- PostgreSQL, Runtime and HTTP API intentionally remain outside this iteration.
+- Создан Go-модуль проекта.
+- Добавлено типизированное мета-описание `Catalog`.
+- `Catalog` содержит:
+  - `id`;
+  - `name`;
+  - `prefix`.
+- Добавлена валидация обязательных `name` и `prefix`.
+- Добавлены unit-тесты.
+- Зафиксирована начальная архитектура Meta-Layer.
+- PostgreSQL, Runtime и HTTP API намеренно оставлены за границами Iteration 001.
 
 ## Verification
 
-- `gofmt -w internal/meta/*.go` — passed.
-- `go test ./...` — passed.
-- `git diff --check` — executed after Git repository initialization.
+- `gofmt -w internal/meta/*.go` — выполнено.
+- `go test ./...` — успешно.
+- `git diff --check` — выполнено.
+- Staged-проверка `git diff --cached --check` — выполнена.
+- Git checkpoint создан.
 
-## Architectural boundary
+## Git checkpoint
 
-This checkpoint establishes only the minimal typed Meta-Layer representation of a Catalog.
+```text
+3984c42 feat: establish initial meta-layer foundation
+Architectural state
 
-It does not introduce:
+DITA получил минимальное типизированное основание Meta-Layer для описания справочника:
 
-- PostgreSQL persistence;
-- Runtime;
-- HTTP API;
-- catalog elements;
-- dynamic requisites;
-- business-code generation;
-- users;
-- system requisites;
-- soft delete;
-- EAV.
+Catalog
+├── id
+├── name
+└── prefix
 
-## Next architectural step
+Catalog описывает мета-объект прикладного справочника и не содержит runtime-элементов этого справочника.
 
-Separately design and implement PostgreSQL persistence for the Meta-Layer.
+Explicitly deferred
+
+Следующие механизмы не реализованы в Iteration 001:
+
+PostgreSQL persistence;
+Runtime;
+HTTP API;
+динамические реквизиты;
+элементы справочника;
+генерация бизнес-кода;
+пользователи;
+системные реквизиты;
+soft delete;
+EAV.
+Next iteration direction
+
+Следующая итерация должна решить вопрос хранения Meta-Layer в PostgreSQL.
+
+На основании этого checkpoint формируется ITERATION_002_CHECKLIST.md.
+
+Следующая итерация должна оставаться минимальной и не вводить Runtime или HTTP API до тех пор, пока persistence Meta-Layer не будет отдельно спроектирован и проверен.
