@@ -1,0 +1,7 @@
+# Compiled binary
+/dita
+
+# Environment secrets
+.env
+.env.*
+!.env.example

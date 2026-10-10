@@ -16,9 +16,11 @@ Runtime
 Application data
 ```
 
-## Initial Meta-Layer
+## Implemented foundation
 
-The first meta-object type implemented for the foundation is `Catalog`.
+### Meta-Layer
+
+The initial meta-object is `Catalog`:
 
 ```text
 Catalog
@@ -27,24 +29,62 @@ Catalog
 └── prefix
 ```
 
-`Catalog` describes an application catalog. It does not contain catalog elements.
+`Catalog` describes an application catalog and does not contain its runtime elements.
 
-## Explicitly deferred
+The Meta-Layer supports catalog creation, retrieval and update through a typed service and repository.
 
-The following are outside the first foundation step:
+### PostgreSQL persistence
 
-- runtime execution;
-- PostgreSQL persistence;
-- HTTP API;
-- dynamic fields;
-- catalog elements;
-- business-code generation;
-- users;
-- system attributes;
+PostgreSQL is the persistent storage.
+
+- SQL-first migrations;
+- typed repositories;
+- metadata stored in `meta_catalogs`;
+- catalog elements stored in `meta_catalog_elements`;
+- no ORM-centered architecture;
+- no EAV as the primary storage model.
+
+### Runtime
+
+Runtime loads catalog metadata and supports:
+
+- creating catalog elements;
+- retrieving elements;
+- updating element names;
+- generating element codes from the catalog prefix and element ID.
+
+Example:
+
+```text
+Catalog prefix: ОО
+Element ID:     1
+Generated code: ОО-000001
+```
+
+### HTTP API
+
+The standard-library `net/http` package exposes the external API.
+
+Implemented endpoints:
+
+- `POST /api/v1/catalogs`
+- `GET /api/v1/catalogs/{id}`
+- `POST /api/v1/catalogs/{id}/elements`
+- `GET /api/v1/catalogs/{id}/elements/{id}`
+- `PATCH /api/v1/catalogs/{id}/elements/{id}`
+
+Clients access application data through the API rather than internal packages or direct database access.
+
+## Remaining work
+
+The following capabilities are not yet confirmed as implemented:
+
 - soft delete;
-- EAV storage.
+- platform-managed system attributes;
+- dynamic metadata-driven fields;
+- configuration-driven behavior beyond the current catalog slice.
 
-These mechanisms will be introduced only when required by the next verified vertical slice.
+They must be introduced deliberately and verified by tests.
 
 ## Architectural constraints
 
@@ -58,3 +98,5 @@ DITA remains:
 - free of ORM as an architectural center;
 - free of EAV as the primary storage model;
 - free of domain-specific GigaWatt entities.
+
+New abstractions must be justified by an actual requirement and a verified vertical slice.
